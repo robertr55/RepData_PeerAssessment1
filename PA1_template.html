@@ -145,6 +145,9 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
   moves.NA &lt;- nrow(moves) - nrow(moves.noNA)</code></pre>
 <div id="the-total-number-of-missing-values-nas-in-the-dataset-is-2304." class="section level4">
 <h4>The total number of missing values (NAs) in the dataset is 2304.</h4>
+</div>
+<div id="the-strategy-for-nas-is-to-replace-them-all-with-the-average-number-of-steps-per-interval-for-all-of-the-non-na-rows.-this-is-a-very-simple-strategy-that-should-not-change-the-mean-value-but-will-likely-change-the-median-value-at-least-a-little-bit." class="section level4">
+<h4>The strategy for NAs is to replace them all with the average number of steps per interval for all of the non-NA rows. This is a very simple strategy that should not change the mean value, but will likely change the median value (at least a little bit).</h4>
 <pre class="r"><code>  ## calculate average number of steps per interval for non-NA rows
   ave.steps.per.interval &lt;- sum(moves.noNA$steps) / nrow(moves.noNA)
 

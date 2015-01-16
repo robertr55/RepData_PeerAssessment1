@@ -133,6 +133,7 @@ Robert Ross - 2015.01.18
 
 #### The total number of missing values (NAs) in the dataset is 2304.
 
+#### The strategy for NAs is to replace them all with the average number of steps per interval for all of the non-NA rows. This is a very simple strategy that should not change the mean value, but will likely change the median value (at least a little bit).
 
 
 ```r
