@@ -198,3 +198,5 @@ Robert Ross - 2015.01.18
   axis(side=2, at=round(moves.weekend$steps,0))
   
 ```
+
+#### I think these graphs answer the question about whether there a difference between activity levels on weekdays and weekends (lots more activity on weekends)

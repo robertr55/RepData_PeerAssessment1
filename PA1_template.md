@@ -237,3 +237,5 @@ Robert Ross - 2015.01.18
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
+
+#### I think these graphs answer the question about whether there a difference between activity levels on weekdays and weekends (lots more activity on weekends)
