@@ -117,7 +117,7 @@ Robert Ross - 2015.01.18
   ## make histogram of total number of steps per day with NAs replace
   names(moves.daily.replaceNA)[2]="steps"
   hist(moves.daily.replaceNA$steps, 
-       main="Histogram of total number of steps per day", 
+       main="Histogram of total number of steps per day after NAs imputed", 
        xlab="Total steps per day when NAs replaced",
        breaks=10)
 
