@@ -11,7 +11,7 @@ Robert Ross - 2015.01.18
 
 ```{r}
   ## setup
-  setwd("~/Coursera/5-Reproducible Research/Assignment1")
+  setwd("~/Coursera/5-Reproducible Research/Assignment1/github/RepData_PeerAssessment1")
   library(dplyr)
   library(ggplot2)
   
@@ -52,6 +52,9 @@ Robert Ross - 2015.01.18
 
 
 #### The median of the total number of steps taken per day is `r moves.daily.median`.
+
+
+
 
 
 
@@ -136,9 +139,31 @@ Robert Ross - 2015.01.18
 #### The difference between the mean of the total number of steps taken per day with no NA values vs. replacing the NAs with the average steps per interval is `r mean.diff` (which is kind of expected:-).
 
 
-#### The difference between the median of the total number of steps taken per day with no NA values vs. replacing the NAs with the average steps per interval is `r median.diff`. This happens because several days have no values (all NAs), and therefore every interval gets replaced with the same average, causing all of these days to have the same total number of steps - so lots of the same "median" values to pick from.
+#### The difference between the median of the total number of steps taken per day with no NA values vs. replacing the NAs with the average steps per interval is `r median.diff`. This happens because several days have no values (all NAs), and therefore every interval gets replaced with the same average, causing all of these days to have the same total number of steps - so lots of identical "median" values to pick from.
 
 
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+```{r}
+  ## convert dates and "military time" to POSIXct times
+  ## add new column representing a weekday or weekend day
+  moves.replaceNA$interval.seconds <- ((moves.replaceNA$interval %/% 100) * 3600) + ((moves.replaceNA$interval %% 100) * 60)
+  moves.replaceNA$date <- as.POSIXct(moves.replaceNA$date)
+  moves.replaceNA$date.time <- moves.replaceNA$date + moves.replaceNA$interval.seconds
+  moves.replaceNA$day.of.week=weekdays(moves.replaceNA$date.time)
+
+  ## swap the weekday name for 'weekday' or 'weekend'
+  moves.replaceNA$day.of.week <- gsub("Monday","weekday",moves.replaceNA$day.of.week)
+  moves.replaceNA$day.of.week <- gsub("Tuesday","weekday",moves.replaceNA$day.of.week)
+  moves.replaceNA$day.of.week <- gsub("Wednesday","weekday",moves.replaceNA$day.of.week)
+  moves.replaceNA$day.of.week <- gsub("Thursday","weekday",moves.replaceNA$day.of.week)
+  moves.replaceNA$day.of.week <- gsub("Friday","weekday",moves.replaceNA$day.of.week)
+  moves.replaceNA$day.of.week <- gsub("Saturday","weekend",moves.replaceNA$day.of.week)
+  moves.replaceNA$day.of.week <- gsub("Sunday","weekend",moves.replaceNA$day.of.week)
+  
+  ## create a factor with the days separated into weekday or weekend
+  moves.replaceNA$day.of.week.fac <- factor(moves.replaceNA$day.of.week, labels=c("weekday","weekend"))
+
+```

@@ -7,7 +7,7 @@ Robert Ross - 2015.01.18
 
 ```r
   ## setup
-  setwd("~/Coursera/5-Reproducible Research/Assignment1")
+  setwd("~/Coursera/5-Reproducible Research/Assignment1/github/RepData_PeerAssessment1")
   library(dplyr)
 ```
 
