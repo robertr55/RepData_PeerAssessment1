@@ -166,4 +166,35 @@ Robert Ross - 2015.01.18
   ## create a factor with the days separated into weekday or weekend
   moves.replaceNA$day.of.week.fac <- factor(moves.replaceNA$day.of.week, labels=c("weekday","weekend"))
 
+  ## final plot comparing activity on weekdays vs. weekends
+  par(mfrow = c(2, 1))
+  
+  ## weekdays
+  moves.weekday <- aggregate(steps ~ interval, data=subset(moves.replaceNA,day.of.week.fac=="weekday"), mean)
+  moves.weekday$interval <- as.character.Date(moves.weekday$interval)
+  
+  plot(moves.weekday$interval, moves.weekday$steps, 
+       type="l", 
+       main="Weekdays - Average number of steps for each 5-minute interval",
+       xlab="5-minute interval during day", 
+       ylab="Steps", 
+       col="blue", 
+       axes=F)
+  axis(side=1, at=moves.weekday$interval)
+  axis(side=2, at=round(moves.weekday$steps,0))
+  
+  ## weekends
+  moves.weekend <- aggregate(steps ~ interval, data=subset(moves.replaceNA,day.of.week.fac=="weekend"), mean)
+  moves.weekend$interval <- as.character.Date(moves.weekend$interval)
+  
+  plot(moves.weekend$interval, moves.weekend$steps, 
+       type="l", 
+       main="Weekends - Average number of steps for each 5-minute interval",
+       xlab="5-minute interval during day", 
+       ylab="Steps", 
+       col="green", 
+       axes=F)
+  axis(side=1, at=moves.weekend$interval)
+  axis(side=2, at=round(moves.weekend$steps,0))
+  
 ```
