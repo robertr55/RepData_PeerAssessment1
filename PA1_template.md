@@ -84,6 +84,9 @@ Robert Ross - 2015.01.18
 
 
 
+
+
+
 ## What is the average daily activity pattern?
 
 
@@ -147,7 +150,7 @@ Robert Ross - 2015.01.18
   ## make histogram of total number of steps per day with NAs replace
   names(moves.daily.replaceNA)[2]="steps"
   hist(moves.daily.replaceNA$steps, 
-       main="Histogram of total number of steps per day", 
+       main="Histogram of total number of steps per day after NAs imputed", 
        xlab="Total steps per day when NAs replaced",
        breaks=10)
 ```
@@ -173,9 +176,64 @@ Robert Ross - 2015.01.18
 #### The difference between the mean of the total number of steps taken per day with no NA values vs. replacing the NAs with the average steps per interval is 0 (which is kind of expected:-).
 
 
-#### The difference between the median of the total number of steps taken per day with no NA values vs. replacing the NAs with the average steps per interval is -1.1886792. This happens because several days have no values (all NAs), and therefore every interval gets replaced with the same average, causing all of these days to have the same total number of steps - so lots of the same "median" values to pick from.
+#### The difference between the median of the total number of steps taken per day with no NA values vs. replacing the NAs with the average steps per interval is -1.1886792. This happens because several days have no values (all NAs), and therefore every interval gets replaced with the same average, causing all of these days to have the same total number of steps - so lots of identical "median" values to pick from.
 
 
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+
+```r
+  ## convert dates and "military time" to POSIXct times
+  ## add new column representing a weekday or weekend day
+  moves.replaceNA$interval.seconds <- ((moves.replaceNA$interval %/% 100) * 3600) + ((moves.replaceNA$interval %% 100) * 60)
+  moves.replaceNA$date <- as.POSIXct(moves.replaceNA$date)
+  moves.replaceNA$date.time <- moves.replaceNA$date + moves.replaceNA$interval.seconds
+  moves.replaceNA$day.of.week=weekdays(moves.replaceNA$date.time)
+
+  ## swap the weekday name for 'weekday' or 'weekend'
+  moves.replaceNA$day.of.week <- gsub("Monday","weekday",moves.replaceNA$day.of.week)
+  moves.replaceNA$day.of.week <- gsub("Tuesday","weekday",moves.replaceNA$day.of.week)
+  moves.replaceNA$day.of.week <- gsub("Wednesday","weekday",moves.replaceNA$day.of.week)
+  moves.replaceNA$day.of.week <- gsub("Thursday","weekday",moves.replaceNA$day.of.week)
+  moves.replaceNA$day.of.week <- gsub("Friday","weekday",moves.replaceNA$day.of.week)
+  moves.replaceNA$day.of.week <- gsub("Saturday","weekend",moves.replaceNA$day.of.week)
+  moves.replaceNA$day.of.week <- gsub("Sunday","weekend",moves.replaceNA$day.of.week)
+  
+  ## create a factor with the days separated into weekday or weekend
+  moves.replaceNA$day.of.week.fac <- factor(moves.replaceNA$day.of.week, labels=c("weekday","weekend"))
+
+  ## final plot comparing activity on weekdays vs. weekends
+  par(mfrow = c(2, 1))
+  
+  ## weekdays
+  moves.weekday <- aggregate(steps ~ interval, data=subset(moves.replaceNA,day.of.week.fac=="weekday"), mean)
+  moves.weekday$interval <- as.character.Date(moves.weekday$interval)
+  
+  plot(moves.weekday$interval, moves.weekday$steps, 
+       type="l", 
+       main="Weekdays - Average number of steps for each 5-minute interval",
+       xlab="5-minute interval during day", 
+       ylab="Steps", 
+       col="blue", 
+       axes=F)
+  axis(side=1, at=moves.weekday$interval)
+  axis(side=2, at=round(moves.weekday$steps,0))
+  
+  ## weekends
+  moves.weekend <- aggregate(steps ~ interval, data=subset(moves.replaceNA,day.of.week.fac=="weekend"), mean)
+  moves.weekend$interval <- as.character.Date(moves.weekend$interval)
+  
+  plot(moves.weekend$interval, moves.weekend$steps, 
+       type="l", 
+       main="Weekends - Average number of steps for each 5-minute interval",
+       xlab="5-minute interval during day", 
+       ylab="Steps", 
+       col="green", 
+       axes=F)
+  axis(side=1, at=moves.weekend$interval)
+  axis(side=2, at=round(moves.weekend$steps,0))
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
